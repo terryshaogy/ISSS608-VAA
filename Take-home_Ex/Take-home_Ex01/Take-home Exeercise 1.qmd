@@ -1,0 +1,18 @@
+---
+title: "Take-home Exercise 1"
+author: "guyue"
+---
+
+```{r}
+pacman::p_load(tidyverse,haven)
+stu_qqq <- read_sas("data/cy08msp_stu_qqq.sas7bdat")
+
+stu_qqq_SG <- stu_qqq %>%
+  filter(CNT == "SGP")
+
+write_rds(stu_qqq_SG,
+          "data/stu_qqq_SG.rds")
+
+stu_qqq_SG <- 
+  read_rds("data/stu_qqq_SG.rds")
+```
