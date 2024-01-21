@@ -3,6 +3,8 @@ title: "Take-home Exercise 1"
 author: "guyue"
 ---
 
+1.0 run file
+
 ```{r}
 pacman::p_load(tidyverse,haven)
 stu_qqq <- read_sas("data/cy08msp_stu_qqq.sas7bdat")
@@ -15,4 +17,28 @@ write_rds(stu_qqq_SG,
 
 stu_qqq_SG <- 
   read_rds("data/stu_qqq_SG.rds")
+```
+
+1.1 pacakge ggplot
+
+```{r}
+pacman::p_load(ggrepel,
+               patchwork,
+               ggthemes,
+               hrbrthemes,
+               tidyverse)
+```
+
+```{r}
+exam_data <- readRDS("data/stu_qqq_SG.rds")
+```
+
+2.0 do the plot
+
+```{r}
+ggplot(data = exam_data,
+       aes(PV1MPIN))+
+  geom_histogram()+
+  ggtitle("English scores versus Maths scores for Primary 3")
+  
 ```
