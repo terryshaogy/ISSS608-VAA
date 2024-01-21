@@ -1,0 +1,250 @@
+---
+title: "Take-home_Exercise 1"
+---
+
+```{r}
+pacman::p_load(tidyverse,haven)
+stu_qqq <- read_sas("data/cy08msp_stu_qqq.sas7bdat")
+
+stu_qqq_SG <- stu_qqq %>%
+  filter(CNT == "SGP")
+
+write_rds(stu_qqq_SG,
+          "data/stu_qqq_SG.rds")
+
+stu_qqq_SG <- 
+  read_rds("data/stu_qqq_SG.rds")
+```
+
+```{r}
+pacman::p_load(ggrepel,
+               patchwork,
+               ggthemes,
+               hrbrthemes,
+               tidyverse)
+```
+
+```{r}
+ggplot(data = stu_qqq_SG,
+       aes(PV1MPIN))+
+  geom_histogram()+
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+begin
+
+compute the average
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  rowwise() %>%
+  mutate(READING_ave = mean(c_across(PV1READ:PV10READ), na.rm = TRUE))
+print(stu_qqq_SG)
+```
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  rowwise() %>%
+  mutate(SCIENCE_ave = mean(c_across(PV1SCIE:PV10SCIE), na.rm = TRUE))
+print(stu_qqq_SG)
+```
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  rowwise() %>%
+  mutate(MATH_ave = mean(c_across(PV1MCUD:PV10MCUD), na.rm = TRUE))
+print(stu_qqq_SG)
+```
+
+1.  
+
+```{r}
+pacman::p_load(ggrepel, patchwork, 
+               ggthemes, hrbrthemes,
+               tidyverse) 
+```
+
+```{r}
+p1<-ggplot(data=stu_qqq_SG,
+       aes(READING_ave))+
+  geom_histogram()+
+  ggtitle("Distribution of Reading_PV")+
+  theme_economist()
+print(p1)
+```
+
+```{r}
+p2<-ggplot(data=stu_qqq_SG,
+       aes(MATH_ave))+
+  geom_histogram()+
+  ggtitle("Distribution of Math_PV")+
+  theme_economist()
+print(p2)
+```
+
+```{r}
+p3<-ggplot(data=stu_qqq_SG,
+       aes(SCIENCE_ave))+
+  geom_histogram()+
+  ggtitle("Distribution of Science_PV")+
+  theme_economist()
+print(p3)
+```
+
+```{r}
+p1 / p2 / p3
+```
+
+2\.
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  mutate(GENDER = case_when(
+    ST004D01T == 1 ~ "female",
+    ST004D01T == 2 ~ "male"
+  ))
+```
+
+```{r}
+p4<-ggplot(data=stu_qqq_SG,
+       aes(READING_ave,
+           GENDER
+           ))+
+  geom_boxplot(notch=TRUE)
+
+```
+
+```{r}
+p5<-ggplot(data=stu_qqq_SG,
+       aes(MATH_ave,
+           GENDER
+           ))+
+  geom_boxplot(notch=TRUE)
+```
+
+```{r}
+p6<-ggplot(data=stu_qqq_SG,
+       aes(SCIENCE_ave,
+           GENDER
+           ))+
+  geom_boxplot(notch=TRUE)
+```
+
+```{r}
+p4/p5/p6
+```
+
+3\.
+
+```         
+```
+
+```{r}
+p7<-ggplot(data=stu_qqq_SG,
+       aes(x=CNTSCHID,
+           y=MATH_ave)) +
+  geom_point()
+print(p7)
+```
+
+```{r}
+p8<-ggplot(data=stu_qqq_SG,
+       aes(x=CNTSCHID,
+           y=READING_ave)) +
+  geom_point()
+print(p8)
+```
+
+```{r}
+p9<-ggplot(data=stu_qqq_SG,
+       aes(x=CNTSCHID,
+           y=SCIENCE_ave)) +
+  geom_point()
+print(p9)
+```
+
+```{r}
+p7 / p8 /p9
+```
+
+4\.
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  mutate(FOOD = case_when(
+    ST258Q01JA == 1 ~ "almost never",
+    ST258Q01JA == 2 ~ "once a week",
+    ST258Q01JA == 3 ~ "2or3 times a week",
+    ST258Q01JA == 4 ~ "4or5 times a week",
+    ST258Q01JA == 5 ~ "alomst everday"
+  ))
+```
+
+```{r}
+p10<-ggplot(data=stu_qqq_SG,
+       aes(FOOD,
+           MATH_ave))+
+  geom_point()
+print(p10)
+```
+
+```{r}
+p11<-ggplot(data=stu_qqq_SG,
+       aes(FOOD,
+           SCIENCE_ave))+
+  geom_point()
+print(p11)
+```
+
+```{r}
+p12<-ggplot(data=stu_qqq_SG,
+       aes(FOOD,
+           READING_ave))+
+  geom_point()
+print(p12)
+```
+
+```{r}
+p10 / p11 / p12
+```
+
+5\.
+
+```{r}
+stu_qqq_SG <- stu_qqq_SG %>%
+  mutate(father_edu = case_when(
+    ST007Q01JA == 1 ~ "3.4",
+    ST007Q01JA == 2 ~ "3.3",
+    ST007Q01JA == 3 ~ "2",
+    ST007Q01JA == 4 ~ "1",
+    ST007Q01JA == 5 ~ "Not complete level 1"
+  ))
+```
+
+```{r}
+p13<-ggplot(data=stu_qqq_SG,
+       aes(father_edu,
+           MATH_ave))+
+  geom_point()
+print(p13)
+```
+
+```{r}
+p14<-ggplot(data=stu_qqq_SG,
+       aes(father_edu,
+           READING_ave))+
+  geom_point()
+print(p14)
+```
+
+```{r}
+p15<-ggplot(data=stu_qqq_SG,
+       aes(father_edu,
+           SCIENCE_ave))+
+  geom_point()
+print(p15)
+```
