@@ -1,8 +1,14 @@
----
-title: "Take-home_Exercise 1"
----
+# \-\--
 
-```{r}
+title: "Take-home_Exercise 1"
+
+# \-\--
+
+# 1.0 Preparation the Analytical Visualization.
+
+### 1.1: Import and read file.
+
+```{R}
 pacman::p_load(tidyverse,haven)
 stu_qqq <- read_sas("data/cy08msp_stu_qqq.sas7bdat")
 
@@ -16,7 +22,10 @@ stu_qqq_SG <-
   read_rds("data/stu_qqq_SG.rds")
 ```
 
+### 1.2: Install R-package
+
 ```{r}
+
 pacman::p_load(ggrepel,
                patchwork,
                ggthemes,
@@ -24,16 +33,7 @@ pacman::p_load(ggrepel,
                tidyverse)
 ```
 
-```{r}
-ggplot(data = stu_qqq_SG,
-       aes(PV1MPIN))+
-  geom_histogram()+
-  ggtitle("English scores versus Maths scores for Primary 3")
-```
-
-begin
-
-compute the average
+### 1.3 Data cleaning
 
 ```{r}
 library(dplyr)
@@ -60,7 +60,11 @@ stu_qqq_SG <- stu_qqq_SG %>%
 print(stu_qqq_SG)
 ```
 
-1.  
+# 2.0 Visualization.
+
+## ***2.1 The distribution of Singapore students\' performance in mathematics, reading, and science.***
+
+### Summary: The PV distribution for math and reading is roughly the same, with a little more people reaching about 600 points in reading than math. The number of people with PV scores of about 600 in science is small, and it can be analyzed that it is more difficult to get a high score in science. Reading will be easier for students.
 
 ```{r}
 pacman::p_load(ggrepel, patchwork, 
@@ -99,7 +103,9 @@ print(p3)
 p1 / p2 / p3
 ```
 
-2\.
+## ***2.2 The relationship between the performances of Math,Reading and Science with different Gender.***
+
+### Summary: Different subjects are tested differently for genders. In reading, it is clear that women's ability is higher than men's ability, and women have higher scores and a higher lower limit (minimum score). In math and science, the gender gap is small, with boys getting higher scores, but the difference in scores is small.
 
 ```{r}
 stu_qqq_SG <- stu_qqq_SG %>%
@@ -115,7 +121,6 @@ p4<-ggplot(data=stu_qqq_SG,
            GENDER
            ))+
   geom_boxplot(notch=TRUE)
-
 ```
 
 ```{r}
@@ -135,13 +140,12 @@ p6<-ggplot(data=stu_qqq_SG,
 ```
 
 ```{r}
-p4/p5/p6
+p4 / p5 / p6
 ```
 
-3\.
+## ***2.3 The relationship between the performances of Math,Reading and Science with different School.***
 
-```         
-```
+### Summary: The results of the three subjects in most schools are maintained in a relatively moderate range, but it can be seen that some schools have very high scores in the three subjects. In the end, There is still a gap between different schools,but there are no schools with very large gaps and very poor results.
 
 ```{r}
 p7<-ggplot(data=stu_qqq_SG,
@@ -171,7 +175,9 @@ print(p9)
 p7 / p8 /p9
 ```
 
-4\.
+## ***2.4 The relationship between the performances of Math,Reading and Science with different Socioeconomic.***
+
+### Summary: This plot shows that whether it is science, math or reading, it is related to whether there is money to have food. Students who have enough money to get food will get better grades. These students do not need to think about food. Students who ate for lack of money four or five times a week had lower high scores and higher low scores. These students usually did not have bad grades, but they were also hard to have good grades, indicating that ***Socioeconomic*** has a strong influence on  ***performances of Math,Reading and Science***.
 
 ```{r}
 stu_qqq_SG <- stu_qqq_SG %>%
@@ -212,7 +218,9 @@ print(p12)
 p10 / p11 / p12
 ```
 
-5\.
+## ***2.5 The relationship between the performances of Math,Reading and Science with different Socioeconomic.***
+
+### Summary: This plot indicates that science, math and reading are all related to students' father's education background. Students with highly educated fathers will get higher scores, and such students will have greater advantages, indicating that ***Socioeconomic*** has a strong influence on  ***performances of Math,Reading and Science***.
 
 ```{r}
 stu_qqq_SG <- stu_qqq_SG %>%
@@ -247,4 +255,8 @@ p15<-ggplot(data=stu_qqq_SG,
            SCIENCE_ave))+
   geom_point()
 print(p15)
+```
+
+```{r}
+p13 / p14 /p15
 ```
